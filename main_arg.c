@@ -1,25 +1,15 @@
 #include "bootp.h"
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-pcap_t *handle;
-int n=0;
-int verbose=1;
 
 void sigint_handler(){
     pcap_breakloop(handle);
-    printf("\n Capture arrêté par l'utilisateur\n");
+    printf("\n Capture stopped by user\n");
 }
 
-void print_packet(u_char *user_args, const struct pcap_pkthdr *packet_header, const u_char *packet){
-    n++;
-    printf("Packet number %d:\n", n);
-    ethernet(user_args, packet_header, packet);
-}
+int verbose=1;
 
 int main(int argc, char *argv[]){
     char errbuf[PCAP_ERRBUF_SIZE] = {0};
+    pcap_t *handle;
     
     const u_char *packet;
     struct pcap_pkthdr packet_header;
@@ -31,8 +21,6 @@ int main(int argc, char *argv[]){
 
     bpf_u_int32 mask;
 	bpf_u_int32 net;
-
-    char opt;
 
     signal(SIGINT, sigint_handler);
 
@@ -53,7 +41,9 @@ int main(int argc, char *argv[]){
                     verbose = atoi(optarg);
                 }
                 else{
-                    printf("Niveau de verbosite invalide\n-v <1-3> : Niveau de verbosite (1=tres concis ; 2=synthetique ; 3=complet)\nla verbosite par défaut va être appliquee, soit le niveau 1\n");
+                    printf("Niveau de verbosité invalide\n
+                    -v <1-3> : Niveau de verbosité (1=très concis ; 2=synthétique ; 3=complet)\n
+                    la verbosité par défaut va être appliquée, soit le niveau 1\n");
                 }
                 break;
             default:
@@ -62,16 +52,16 @@ int main(int argc, char *argv[]){
                 exit(1);
         }
     }
-        if(device == NULL) {
-		    device = pcap_lookupdev(errbuf);
-		    if (device == NULL) {
-				fprintf(stderr, "L'interface par defaut n'a pas ete trouvee: %s\n", errbuf);
+        if(dev == NULL) {
+		    dev = pcap_lookupdev(errbuf);
+		    if (dev == NULL) {
+				fprintf(stderr, "L'interface par défaut n'a pas été trouvée: %s\n", errbuf);
 				return -1;
 		    }
 	    }
 
-        if (pcap_lookupnet(device, &net, &mask, errbuf) == -1) {
-		    fprintf(stderr, "Impossible d'obtenir le Netmask de l'interface %s: %s\n", device, errbuf);
+        if (pcap_lookupnet(dev, &net, &mask, errbuf) == -1) {
+		    fprintf(stderr, "Impossible d'obtenir le Netmask de l'interface %s: %s\n", dev, errbuf);
 		    net = 0;
 		    mask = 0;
 	    }
@@ -79,8 +69,8 @@ int main(int argc, char *argv[]){
         if(file==NULL){
             handle = pcap_open_live(device, BUFSIZ,1,0,errbuf);
             if(handle == NULL){
-                perror("ERREUR: Impossible d'ouvrir le periphérique pcap\n");
-                return -1;
+                perror("ERREUR: Impossible d'ouvrir le périphérique pcap\n");
+                return -1
             }
             if(filter_exp != NULL){
                 if (pcap_compile(handle, &filter, filter_exp, 0, net) == -1) {
@@ -105,5 +95,3 @@ int main(int argc, char *argv[]){
         pcap_close(handle);
         return 0;
 }
-
-
