@@ -1,5 +1,5 @@
-OBJS	= main.o ethernet.o
-SOURCE	= main.c ethernet.c
+OBJS	= main.o ethernet.o tcp.o
+SOURCE	= main.c ethernet.c tcp.c
 HEADER	= bootp.h
 OUT		= analyseur
 LFLAGS	= -lpcap

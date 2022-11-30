@@ -14,7 +14,7 @@ void sigint_handler(){
 
 void print_packet(u_char *user_args, const struct pcap_pkthdr *packet_header, const u_char *packet){
     n++;
-    printf("Packet number %d:\n", n);
+    printf(" %d || ", n);
     ethernet(user_args, packet_header, packet);
 }
 
