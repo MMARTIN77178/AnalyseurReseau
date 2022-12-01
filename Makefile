@@ -1,6 +1,6 @@
-OBJS	= main.o ethernet.o tcp.o
-SOURCE	= main.c ethernet.c tcp.c
-HEADER	= bootp.h
+OBJS	= main.o ethernet.o tcp.o arp.o
+SOURCE	= main.c ethernet.c tcp.c arp.c
+HEADER	= bootp.h arp.h
 OUT		= analyseur
 LFLAGS	= -lpcap
 CFLAGS	= -Wall -g -Wextra

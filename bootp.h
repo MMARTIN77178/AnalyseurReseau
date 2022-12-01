@@ -5,6 +5,8 @@
 #include <netinet/ip.h>
 #include <netinet/udp.h>
 #include <netinet/tcp.h>
+#include <netinet/ip6.h>
+#include "arp.h"
 #include <stdio.h>
 #include "pcap.h"
 #include <stdlib.h>
@@ -21,6 +23,10 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
 
 /** Protocole IPv4 **/
 void ipv4(const unsigned char*);
+
+void ipv6(const unsigned char*);
+
+void arp(const unsigned char*);
 
 /** Protocole TCP*/
 void tcp(const unsigned char*);
