@@ -18,6 +18,8 @@
 #define SOULIGNE "\033[04m"
 #define NORMAL "\033[00m"
 
+char * get_mac_addr(u_char *mac_addr);
+
 /** Protocole Ethernet **/
 void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const u_char *packet);
 

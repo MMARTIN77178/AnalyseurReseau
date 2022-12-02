@@ -37,8 +37,32 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
             printf(BLEUCLAIR "ARP\n" NORMAL);
             arp(net_pckt);
             break;
+        case ETHERTYPE_REVARP:
+            printf(BLEUCLAIR "RARP\n" NORMAL);
+            break;
+        case ETHERTYPE_VLAN:
+            printf(BLEUCLAIR "VLAN\n" NORMAL);
+            break;
+        case ETHERTYPE_LOOPBACK:
+            printf(BLEUCLAIR "Loopback\n" NORMAL);
+            break;
+        case ETHERTYPE_PUP:
+            printf(BLEUCLAIR "PUP\n" NORMAL);
+            break;
+        case ETHERTYPE_SPRITE:
+            printf(BLEUCLAIR "Sprite\n" NORMAL);
+            break;
+        case ETHERTYPE_IPX:
+            printf(BLEUCLAIR "IPX\n" NORMAL);
+            break;
+        case ETHERTYPE_AT:
+            printf(BLEUCLAIR "AT\n" NORMAL);
+            break;
+        case ETHERTYPE_AARP:
+            printf(BLEUCLAIR "AARP\n" NORMAL);
+            break;
         default:
-            printf(BLEUCLAIR "%d\n" NORMAL, ntohs(ethptr->ether_type));
+            printf(BLEUCLAIR "length : %d\n" NORMAL, ntohs(ethptr->ether_type));
             break;
     }
 }
@@ -62,8 +86,8 @@ void ipv4(const unsigned char* net_pckt){
     }
     switch(ipptr->ip_p){
         case IPPROTO_TCP:
-            if (verbose==1){
-                printf("Application : TCP\n");
+            if (verbose>1){
+                printf(BLEU "\t\tProtocole : TCP\n" NORMAL);
             }
             tcp(net_pckt+ipptr->ip_hl*4);
             break;

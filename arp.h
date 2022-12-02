@@ -16,6 +16,10 @@ struct arp_hdr {
 
 char *arp_hwtype(uint16_t hwtype);
 
+char *arp_prot(uint16_t pro);
 
+char *arp_opcode(uint16_t opcode);
+
+char *get_ip_addr(uint8_t *ip);
 
 #endif // ARP_H_INCLUDED

@@ -5,7 +5,7 @@ extern int verbose;
 void tcp(const unsigned char *ippacket){
     struct tcphdr *tcpptr=(struct tcphdr*)ippacket;
         if(verbose>=2){
-            printf(ROUGE "\tTCP || src port : %d || dst port : %d || seq : %d ||  ack : %d || len : %d\n" NORMAL, ntohs(tcpptr->th_sport), ntohs(tcpptr->th_dport), ntohl(tcpptr->th_seq), ntohl(tcpptr->th_ack), tcpptr->th_off*4);
+            printf(ROUGE "\t\tTCP || src port : %d || dst port : %d || seq : %d ||  ack : %d || len : %d\n" NORMAL, ntohs(tcpptr->th_sport), ntohs(tcpptr->th_dport), ntohl(tcpptr->th_seq), ntohl(tcpptr->th_ack), tcpptr->th_off*4);
         }
         if(verbose==3){
             printf(ROUGE "\t\t\tSource port : %d\n" NORMAL, ntohs(tcpptr->th_sport));
