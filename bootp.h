@@ -6,7 +6,7 @@
 #include <netinet/udp.h>
 #include <netinet/tcp.h>
 #include <netinet/ip6.h>
-#include "arp.h"
+#include <netinet/ether.h>
 #include <stdio.h>
 #include "pcap.h"
 #include <stdlib.h>
