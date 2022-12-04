@@ -16,53 +16,41 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
 
     char *ethdst=get_mac_addr(ethptr->ether_dhost);
     char *ethsrc=get_mac_addr(ethptr->ether_shost);
-
+    //idée : implémenter fonction pour récupérer Organizationally Unique Identifier
     if((strcmp(ethdst, "00:00:00:00:00") == 0) && strcmp(ethdst, "00:00:00:00:00") == 0){
         printf("Ethernet || ");
     }
     else{
-        printf("Ethernet || src : %s || dest : %s || ", ethsrc, ethdst);
+        printf("Ethernet || src : %s || dest : %s \n ", ethsrc, ethdst);
     }
 
     switch(ntohs(ethptr->ether_type)){
         case ETHERTYPE_IP:
-            printf(BLEUCLAIR "IPv4\n" NORMAL);
             ipv4(net_pckt);
             break;
         case ETHERTYPE_IPV6:
-            printf(BLEUCLAIR "IPv6\n" NORMAL);
             ipv6(net_pckt);
             break;
         case ETHERTYPE_ARP:
-            printf(BLEUCLAIR "ARP\n" NORMAL);
             arp(net_pckt);
             break;
         case ETHERTYPE_REVARP:
-            printf(BLEUCLAIR "RARP\n" NORMAL);
             break;
         case ETHERTYPE_VLAN:
-            printf(BLEUCLAIR "VLAN\n" NORMAL);
             break;
         case ETHERTYPE_LOOPBACK:
-            printf(BLEUCLAIR "Loopback\n" NORMAL);
             break;
         case ETHERTYPE_PUP:
-            printf(BLEUCLAIR "PUP\n" NORMAL);
             break;
         case ETHERTYPE_SPRITE:
-            printf(BLEUCLAIR "Sprite\n" NORMAL);
             break;
         case ETHERTYPE_IPX:
-            printf(BLEUCLAIR "IPX\n" NORMAL);
             break;
         case ETHERTYPE_AT:
-            printf(BLEUCLAIR "AT\n" NORMAL);
             break;
         case ETHERTYPE_AARP:
-            printf(BLEUCLAIR "AARP\n" NORMAL);
             break;
         default:
-            printf(BLEUCLAIR "length : %d\n" NORMAL, ntohs(ethptr->ether_type));
             break;
     }
 }
@@ -70,9 +58,10 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
 void ipv4(const unsigned char* net_pckt){
     struct ip *ipptr=(struct ip*)net_pckt;
     if(verbose>=2){
-        printf("\tIPv4 || src: %s || dst: %s \n", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+        printf("\tIPv4 || src: %s || dst: %s || \n", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
     }
     if(verbose==3){
+        printf("\n");
         printf(BLEU "\t\tHeader length : %d (%d bytes)\n" NORMAL, ipptr->ip_hl, ipptr->ip_hl*4);
         printf(BLEU "\t\tVersion : %d\n" NORMAL, ipptr->ip_v);
         printf(BLEU "\t\tType of service : %d\n" NORMAL, ipptr->ip_tos);
@@ -86,16 +75,12 @@ void ipv4(const unsigned char* net_pckt){
     }
     switch(ipptr->ip_p){
         case IPPROTO_TCP:
-            if (verbose>1){
-                printf(BLEU "\t\tProtocole : TCP\n" NORMAL);
-            }
             tcp(net_pckt+ipptr->ip_hl*4);
+            break;        
+        case IPPROTO_UDP:
+            udp(net_pckt+ipptr->ip_hl*4);
             break;
         /*
-        case IPPROTO_UDP:
-            printf(BLEUCLAIR "\t\tUDP\n" NORMAL);
-            udp(net_pckt+iptr->ip_hl*4);
-            break;
         case IPPROTO_ICMP:
             printf(BLEUCLAIR "\t\tICMP\n" NORMAL);
             icmp(net_pckt+iptr->ip_hl*4);

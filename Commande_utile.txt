@@ -1,2 +1,0 @@
-Compilation avec lpcap : gcc <filename> -lpcap
-
