@@ -7,6 +7,7 @@
 #include <netinet/tcp.h>
 #include <netinet/ip6.h>
 #include <netinet/ether.h>
+#include "dns.h"
 #include <stdio.h>
 #include "pcap.h"
 #include <stdlib.h>
@@ -34,11 +35,11 @@ void ipv6(const unsigned char*);
 /** Protocole ARP **/
 void arp(const unsigned char*);
 
-void print_tcp_flags(u_char flags);
+void print_tcp_flags(u_char);
 
 /** Protocole TCP*/
 void tcp(const unsigned char*);
 
 /** Protocole UDP **/
-void udp(const unsigned char *ippacket);
+void udp(const unsigned char *);
 #endif

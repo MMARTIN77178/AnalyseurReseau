@@ -57,4 +57,16 @@ void tcp(const unsigned char *ippacket){
         printf(ROUGE "\t\t\tChecksum : 0x%x\n" NORMAL, ntohs(tcpptr->check));
         printf(ROUGE "\t\t\tUrgent pointer : %d\n" NORMAL, ntohs(tcpptr->urg_ptr));
     }
+    switch(ntohs(tcpptr->th_sport)){
+        case 53:
+            dns(ippacket+tcpptr->th_off*4);
+            break;
+        /*
+        case 67:
+            bootp(ippacket+tcpptr->th_off*4);
+            break;
+        */
+        default:
+            break;
+    }
 }

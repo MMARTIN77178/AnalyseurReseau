@@ -1,3 +1,12 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "bootp.h": "c",
+        "inttypes.h": "c",
+        "in.h": "c",
+        "features.h": "c",
+        "stdint-uintn.h": "c",
+        "socket.h": "c",
+        "types.h": "c"
+    }
 }
