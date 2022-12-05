@@ -34,3 +34,4 @@ struct dnshdr{
     uint16_t arcount;
 };
 
+#endif

@@ -2,6 +2,7 @@
 #include <string.h>
 
 extern int verbose;
+extern int size_payload;
 
 char * get_mac_addr(u_char *mac_addr){
     char *mac = malloc(18);
@@ -73,6 +74,8 @@ void ipv4(const unsigned char* net_pckt){
         printf(BLEU "\t\tSource address : %s\n" NORMAL, inet_ntoa(ipptr->ip_src));
         printf(BLEU "\t\tDestination address : %s\n" NORMAL, inet_ntoa(ipptr->ip_dst));
     }
+    size_payload=ntohs(ipptr->ip_len);
+    //a faire que si verbose >= 2 ?
     switch(ipptr->ip_p){
         case IPPROTO_TCP:
             tcp(net_pckt+ipptr->ip_hl*4);
@@ -110,25 +113,22 @@ void ipv6(const unsigned char* net_pckt){
         printf(BLEU "\t\tDestination address : %s\n" NORMAL, dst);
 
     }
+    size_payload=ntohs(ip6ptr->ip6_plen);
+    //a faire que si verbose>1 ?
     switch(ip6ptr->ip6_nxt){
         case IPPROTO_TCP:
-            if (verbose==1){
-                printf("Application : TCP\n");
-            }
             tcp(net_pckt+40);
             break;
-        /*
+        
         case IPPROTO_UDP:
-            if (verbose==1){
-                printf("Application : UDP\n");
-            }
             udp(net_pckt+40);
             break;
+        /*
         case IPPROTO_ICMPV6:
             if (verbose==1){
                 printf("Application : ICMPv6\n");
             }
-            icmpv6(net_pckt+40);
+            //icmpv6(net_pckt+40);
             break;
         */
        default:

@@ -18,8 +18,11 @@
 #define BLEU "\033[00;34m"
 #define SOULIGNE "\033[04m"
 #define NORMAL "\033[00m"
+#define YELLOW "\033[01;33m"
 
 #define SET(x) (x==1?"set":"not set")
+
+
 
 char * get_mac_addr(u_char *mac_addr);
 
@@ -42,4 +45,6 @@ void tcp(const unsigned char*);
 
 /** Protocole UDP **/
 void udp(const unsigned char *);
+
+void http(const unsigned char *);
 #endif

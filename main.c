@@ -7,6 +7,8 @@ pcap_t *handle;
 int n=0;
 int verbose=1;
 
+int size_payload;
+
 void sigint_handler(){
     pcap_breakloop(handle);
     printf("\n Capture arrêté par l'utilisateur\n");

@@ -1,6 +1,8 @@
 #include "bootp.h"
+#include <string.h>
 
 extern int verbose;
+extern int size_payload;
 
 void print_tcp_flags(u_char flags){
     if(flags & 0x01){
@@ -57,16 +59,17 @@ void tcp(const unsigned char *ippacket){
         printf(ROUGE "\t\t\tChecksum : 0x%x\n" NORMAL, ntohs(tcpptr->check));
         printf(ROUGE "\t\t\tUrgent pointer : %d\n" NORMAL, ntohs(tcpptr->urg_ptr));
     }
+    size_payload-=tcpptr->th_off*4;
     switch(ntohs(tcpptr->th_sport)){
-        case 53:
-            dns(ippacket+tcpptr->th_off*4);
+        case 80:
+            http(ippacket+tcpptr->th_off*4);
             break;
         /*
         case 67:
             bootp(ippacket+tcpptr->th_off*4);
             break;
-        */
         default:
             break;
+        */
     }
 }
