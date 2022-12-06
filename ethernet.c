@@ -74,7 +74,7 @@ void ipv4(const unsigned char* net_pckt){
         printf(BLEU "\t\tSource address : %s\n" NORMAL, inet_ntoa(ipptr->ip_src));
         printf(BLEU "\t\tDestination address : %s\n" NORMAL, inet_ntoa(ipptr->ip_dst));
     }
-    size_payload=ntohs(ipptr->ip_len);
+    size_payload=ntohs(ipptr->ip_len)-ipptr->ip_hl*4;
     //a faire que si verbose >= 2 ?
     switch(ipptr->ip_p){
         case IPPROTO_TCP:

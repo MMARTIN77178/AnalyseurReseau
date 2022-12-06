@@ -59,8 +59,21 @@ void tcp(const unsigned char *ippacket){
         printf(ROUGE "\t\t\tChecksum : 0x%x\n" NORMAL, ntohs(tcpptr->check));
         printf(ROUGE "\t\t\tUrgent pointer : %d\n" NORMAL, ntohs(tcpptr->urg_ptr));
     }
-    size_payload-=tcpptr->th_off*4;
+    size_payload=size_payload-tcpptr->th_off*4;
+    printf("size_payload : %d\n", size_payload);
     switch(ntohs(tcpptr->th_sport)){
+        case 80:
+            http(ippacket+tcpptr->th_off*4);
+            break;
+        /*
+        case 67:
+            bootp(ippacket+tcpptr->th_off*4);
+            break;
+        default:
+            break;
+        */
+    }
+    switch(ntohs(tcpptr->th_dport)){
         case 80:
             http(ippacket+tcpptr->th_off*4);
             break;

@@ -23,5 +23,12 @@ void udp(const unsigned char *ippacket){
         default:
             break;
     }
+    switch(ntohs(udpptr->dest)){
+        case 80:
+            http(ippacket+8);
+            break;
+        default:
+            break;
+    }
     return;
 }
