@@ -60,10 +60,15 @@ void tcp(const unsigned char *ippacket){
         printf(ROUGE "\t\t\tUrgent pointer : %d\n" NORMAL, ntohs(tcpptr->urg_ptr));
     }
     size_payload=size_payload-tcpptr->th_off*4;
-    printf("size_payload : %d\n", size_payload);
     switch(ntohs(tcpptr->th_sport)){
         case 80:
             http(ippacket+tcpptr->th_off*4);
+            break;
+        case 21:
+            ftp(ippacket+tcpptr->th_off*4, true);
+            break;
+        case 20:
+            ftp(ippacket+tcpptr->th_off*4, true);
             break;
         /*
         case 67:
@@ -76,6 +81,12 @@ void tcp(const unsigned char *ippacket){
     switch(ntohs(tcpptr->th_dport)){
         case 80:
             http(ippacket+tcpptr->th_off*4);
+            break;
+        case 21:
+            ftp(ippacket+tcpptr->th_off*4, false);
+            break;
+        case 20:
+            ftp(ippacket+tcpptr->th_off*4, false);
             break;
         /*
         case 67:

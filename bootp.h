@@ -12,13 +12,14 @@
 #include "pcap.h"
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define BLEUCLAIR "\033[01;34m"
 #define ROUGE "\033[00;31m"
 #define BLEU "\033[00;34m"
 #define SOULIGNE "\033[04m"
 #define NORMAL "\033[00m"
-#define YELLOW "\033[01;33m"
+#define YELLOW "\033[00;33m"
 
 #define SET(x) (x==1?"set":"not set")
 
@@ -47,4 +48,10 @@ void tcp(const unsigned char*);
 void udp(const unsigned char *);
 
 void http(const unsigned char *);
+
+void ftp(const unsigned char *, bool);
+
+void ftp_request(const unsigned char *);
+
+void ftp_response(const unsigned char *);
 #endif
