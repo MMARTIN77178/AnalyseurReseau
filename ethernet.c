@@ -3,11 +3,11 @@
 
 extern int verbose;
 extern int size_payload;
+char mac_addr_str[18];
 
 char * get_mac_addr(u_char *mac_addr){
-    char *mac = malloc(18);
-    sprintf(mac, "%02x:%02x:%02x:%02x:%02x:%02x", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-    return mac;
+    sprintf(mac_addr_str, "%02x:%02x:%02x:%02x:%02x:%02x", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);    
+    return mac_addr_str;
 }
 
 void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const u_char *packet){
@@ -59,10 +59,9 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
 void ipv4(const unsigned char* net_pckt){
     struct ip *ipptr=(struct ip*)net_pckt;
     if(verbose>=2){
-        printf("\tIPv4 || src: %s || dst: %s || \n", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+        printf(BLEU "\tIPv4 || src: %s || dst: %s ||\n" NORMAL, inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
     }
     if(verbose==3){
-        printf("\n");
         printf(BLEU "\t\tHeader length : %d (%d bytes)\n" NORMAL, ipptr->ip_hl, ipptr->ip_hl*4);
         printf(BLEU "\t\tVersion : %d\n" NORMAL, ipptr->ip_v);
         printf(BLEU "\t\tType of service : %d\n" NORMAL, ipptr->ip_tos);
@@ -75,22 +74,23 @@ void ipv4(const unsigned char* net_pckt){
         printf(BLEU "\t\tDestination address : %s\n" NORMAL, inet_ntoa(ipptr->ip_dst));
     }
     size_payload=ntohs(ipptr->ip_len)-ipptr->ip_hl*4;
-    //a faire que si verbose >= 2 ?
-    switch(ipptr->ip_p){
-        case IPPROTO_TCP:
-            tcp(net_pckt+ipptr->ip_hl*4);
-            break;        
-        case IPPROTO_UDP:
-            udp(net_pckt+ipptr->ip_hl*4);
-            break;
-        /*
-        case IPPROTO_ICMP:
-            printf(BLEUCLAIR "\t\tICMP\n" NORMAL);
-            icmp(net_pckt+iptr->ip_hl*4);
-            break;
-        */
-        default:
-            break;
+    if(verbose>=2){
+        switch(ipptr->ip_p){
+            case IPPROTO_TCP:
+                tcp(net_pckt+ipptr->ip_hl*4);
+                break;        
+            case IPPROTO_UDP:
+                udp(net_pckt+ipptr->ip_hl*4);
+                break;
+            /*
+            case IPPROTO_ICMP:
+                printf(BLEUCLAIR "\t\tICMP\n" NORMAL);
+                icmp(net_pckt+iptr->ip_hl*4);
+                break;
+            */
+            default:
+                break;
+        }
     }
 }
 

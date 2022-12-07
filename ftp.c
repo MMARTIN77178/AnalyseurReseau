@@ -4,159 +4,213 @@
 extern int verbose;
 extern int size_payload;
 
-void ftp_request(const unsigned char* data)
+void ftp_request(const unsigned char* packet)
 {
-    const char *payload = (const char *) data;
-    int test = 0;
-    
-    printf(YELLOW "\t\t\t\t\t\t\tRequest command:\n" NORMAL);
-
-    if (strstr(payload, "USER") != NULL)
-	{
-		printf("USER ");
-        test = 1;
-	}
-    if (strstr(payload, "PASS") != NULL)
-	{
-		printf("PASS ");
-        test = 1;
-	}
-    if (strstr(payload, "ACCT") != NULL)
-	{
-		printf("ACCT ");
-        test = 1;
+    const char *payload = (const char *) packet;
+    char req[4];
+    strncpy(req, payload, 4);
+    printf(YELLOW "\t\t\t\t\t\tRequest command:" NORMAL);
+    if (strcmp(req, "ABOR")==0){
+        printf(YELLOW "ABOR\n"NORMAL);
     }
-    if (strstr(payload, "CWD") != NULL)
-	{
-		printf("CWD ");
-        test = 1;
-	}
-    if (strstr(payload, "CDUP") != NULL)
-	{
-		printf("CDUP ");
-        test = 1;
-	}
-    if (strstr(payload, "QUIT") != NULL)
-	{
-		printf("QUIT ");
-        test = 1;
-	}
-    if (strstr(payload, "PORT") != NULL)
-	{
-		printf("PORT ");
-        test = 1;
-	}
-    if (strstr(payload, "PASV") != NULL)
-	{
-		printf("PASV ");
-        test = 1;
-	} 
-    if (strstr(payload, "TYPE") != NULL)
-	{
-		printf("TYPE ");
-        test = 1;
-	} 
-    if (strstr(payload, "RETR") != NULL)
-	{
-		printf("RETR ");
-        test = 1;
-	} 
-    if (strstr(payload, "STOR") != NULL)
-	{
-		printf("STOR ");
-        test = 1;
-	} 
-    if (strstr(payload, "APPE") != NULL)
-	{
-		printf("APPE ");
-        test = 1;
-	} 
-    if (strstr(payload, "REST") != NULL)
-	{
-		printf("REST ");
-        test = 1;
-	} 
-    if (strstr(payload, "RNFR") != NULL)
-	{
-		printf("RNFR ");
-        test = 1;
-	} 
-    if (strstr(payload, "RNTO") != NULL)
-	{
-		printf("RNTO ");
-        test = 1;
-	}
-    if (strstr(payload, "ABOR") != NULL)
-	{
-		printf("ABOR ");
-        test = 1;
-	}
-    if (strstr(payload, "DELE") != NULL)
-	{
-		printf("DELE ");
-        test = 1;
-	}
-    if (strstr(payload, "RMD") != NULL)
-	{
-		printf("RMD ");
-        test = 1;
-	}
-    if (strstr(payload, "MKD") != NULL)
-	{
-		printf("MKD ");
-        test = 1;
-	}
-    if (strstr(payload, "PWD") != NULL)
-	{
-		printf("PWD ");
-        test = 1;
-	}
-    if (strstr(payload, "LIST") != NULL)
-	{
-		printf("LIST ");
-        test = 1;
-	}
-    if (strstr(payload, "SITE") != NULL)
-	{
-		printf("SITE ");
-        test = 1;
-	}
-    if (strstr(payload, "SYST") != NULL)
-	{
-		printf("SYST ");
-        test = 1;
-	}
-    if (strstr(payload, "STAT") != NULL)
-	{
-		printf("STAT ");
-        test = 1;
-	}
-    if (strstr(payload, "HELP") != NULL)
-	{
-		printf("HELP ");
-        test = 1;
-	}
-    if (strstr(payload, "NOOP") != NULL)
-	{
-		printf("NOOP ");
-        test = 1;
-	}
-
-    if (!test)
-    {
-        printf("none\n");
-        return;
+    else if (strcmp(req, "ACCT")==0){
+        printf(YELLOW"ACCT\n"NORMAL);
     }
-    printf("\n");
+    else if (strcmp(req, "ADAT")==0){
+        printf(YELLOW"ADAT\n"NORMAL);
+    }
+    else if (strcmp(req, "ALLO")==0){
+        printf(YELLOW"ALLO\n"NORMAL);
+    }
+    else if (strcmp(req, "APPE")==0){
+        printf(YELLOW"APPE\n"NORMAL);
+    }
+    else if (strcmp(req, "AUTH")==0){
+        printf(YELLOW"AUTH\n"NORMAL);
+    }
+    else if (strcmp(req, "CCC")==0){
+        printf(YELLOW"CCC"NORMAL);
+    }
+    else if (strcmp(req, "CDUP")==0){
+        printf(YELLOW"CDUP\n"NORMAL);
+    }
+    else if (strcmp(req, "CONF")==0){
+        printf(YELLOW"CONF\n"NORMAL);
+    }
+    else if (strcmp(req, "CWD")==0){
+        printf(YELLOW"CWD\n"NORMAL);
+    }
+    else if (strcmp(req, "DELE")==0){
+        printf(YELLOW"DELE\n"NORMAL);
+    }
+    else if (strcmp(req, "ENC ")==0){
+        printf(YELLOW"ENC\n"NORMAL);
+    }
+    else if (strcmp(req, "EPRT")==0){
+        printf(YELLOW"EPRT\n"NORMAL);
+    }
+    else if (strcmp(req, "EPSV")==0){
+        printf(YELLOW"EPSV\n"NORMAL);
+    }
+    else if (strcmp(req, "FEAT")==0){
+        printf(YELLOW"FEAT\n"NORMAL);
+    }
+    else if (strcmp(req, "LANG")==0){
+        printf(YELLOW"LANG\n"NORMAL);
+    }
+    else if (strcmp(req, "LIST")==0){
+        printf(YELLOW"LIST\n"NORMAL);
+    }
+    else if (strcmp(req, "LPRT")==0){
+        printf(YELLOW"LPRT\n"NORMAL);
+    }
+    else if (strcmp(req, "LPSV")==0){
+        printf(YELLOW"LPSV\n"NORMAL);
+    }
+    else if (strcmp(req, "HELP")==0){
+        printf(YELLOW"HELP\n"NORMAL);
+    }
+    else if (strcmp(req, "LIST")==0){
+        printf(YELLOW"LIST\n"NORMAL);
+    }
+    else if (strcmp(req, "MDTM")==0){
+        printf(YELLOW"MDTM\n"NORMAL);
+    }
+    else if (strcmp(req, "MKD")==0){
+        printf(YELLOW"MKD\n"NORMAL);
+    }
+    else if(strcmp(req, "MLST")==0){
+        printf(YELLOW"MLST\n"NORMAL);
+    }
+    else if (strcmp(req, "MODE")==0){
+        printf(YELLOW"MODE\n"NORMAL);
+    }
+    else if (strcmp(req, "NLST")==0){
+        printf(YELLOW"NLST\n"NORMAL);
+    }
+    else if (strcmp(req, "NOOP")==0){
+        printf(YELLOW"NOOP\n"NORMAL);
+    }
+    else if (strcmp(req, "OPTS")==0){
+        printf(YELLOW"OPTS\n"NORMAL);
+    }
+    else if (strcmp(req, "PASS")==0){
+        printf(YELLOW"PASS\n"NORMAL);
+    }
+    else if (strcmp(req, "PASV")==0){
+        printf(YELLOW"PASV\n"NORMAL);
+    }
+    else if (strcmp(req, "PORT")==0){
+        printf(YELLOW"PORT\n"NORMAL);
+    }
+    else if (strcmp(req, "PROT")==0){
+        printf(YELLOW"PROT\n"NORMAL);
+    }
+    else if (strcmp(req, "PWD")==0){
+        printf(YELLOW"PWD\n"NORMAL);
+    }
+    else if (strcmp(req, "QUIT")==0){
+        printf(YELLOW"QUIT\n"NORMAL);
+    }
+    else if (strcmp(req, "REIN")==0){
+        printf(YELLOW"REIN\n"NORMAL);
+    }
+    else if (strcmp(req, "REST")==0){
+        printf(YELLOW"REST\n"NORMAL);
+    }
+    else if (strcmp(req, "RETR")==0){
+        printf(YELLOW"RETR\n"NORMAL);
+    }
+    else if (strcmp(req, "RMD")==0){
+        printf(YELLOW"RMD\n"NORMAL);
+    }
+    else if (strcmp(req, "RNFR")==0){
+        printf(YELLOW"RNFR\n"NORMAL);
+    }
+    else if (strcmp(req, "RNTO")==0){
+        printf(YELLOW"RNTO\n"NORMAL);
+    }
+    else if (strcmp(req, "SITE")==0){
+        printf(YELLOW"SITE\n"NORMAL);
+    }
+    else if (strcmp(req, "SIZE")==0){
+        printf(YELLOW"SIZE\n"NORMAL);
+    }
+    else if (strcmp(req, "SMNT")==0){
+        printf(YELLOW"SMNT\n"NORMAL);
+    }
+    else if (strcmp(req, "STAT")==0){
+        printf(YELLOW"STAT\n"NORMAL);
+    }
+    else if (strcmp(req, "STOR")==0){
+        printf(YELLOW"STOR\n"NORMAL);
+    }
+    else if (strcmp(req, "STOU")==0){
+        printf(YELLOW"STOU\n"NORMAL);
+    }
+    else if (strcmp(req, "STRU")==0){
+        printf(YELLOW"STRU\n"NORMAL);
+    }
+    else if (strcmp(req, "SYST")==0){
+        printf(YELLOW"SYST\n"NORMAL);
+    }
+    else if (strcmp(req, "TYPE")==0){
+        printf(YELLOW"TYPE\n"NORMAL);
+    }
+    else if (strcmp(req, "USER")==0){
+        printf(YELLOW"USER\n"NORMAL);
+    }
+    else if (strcmp(req, "XCUP")==0){
+        printf(YELLOW"XCUP\n"NORMAL);
+    }
+    else if (strcmp(req, "XMKD")==0){
+        printf(YELLOW"XMKD\n"NORMAL);
+    }
+    else if (strcmp(req, "XPWD")==0){
+        printf(YELLOW"XPWD\n"NORMAL);
+    }
+    else if (strcmp(req, "XRCP")==0){
+        printf(YELLOW"XRCP\n"NORMAL);
+    }
+    else if (strcmp(req, "XRMD")==0){
+        printf(YELLOW"XRMD\n"NORMAL);
+    }
+    else if (strcmp(req, "XRSQ")==0){
+        printf(YELLOW"XRSQ\n"NORMAL);
+    }
+    else if (strcmp(req, "XSEM")==0){
+        printf(YELLOW"XSEM\n"NORMAL);
+    }
+    else if (strcmp(req, "XSEN")==0){
+        printf(YELLOW"XSEN\n"NORMAL);
+    }
+    else{
+        printf(YELLOW"Unknown command\n"NORMAL);
+    }
+    int cnt=0;
+    if(size_payload-4>0){
+        printf(YELLOW "\t\t\t\t\t\tRequest arg:"NORMAL);
+        for(int i = 4; i < size_payload-1; i++) {
+            if(packet[i] == '\r' && packet[i+1] == '\n'){
+                cnt=0;
+                i++;
+            }
+            else{
+                printf(YELLOW "%c" NORMAL, packet[i]);
+                cnt++;
+            }
+        }
+        printf(YELLOW "\n" NORMAL);
+    }
+
     return;
     
 }
 
 void ftp_response(const unsigned char *packet){
     const char *payload = (const char *) packet;
-    char code[3];
-    snprintf(code, 3+1, "%.3s", payload);
-    int code_int = atoi(code);
+    
+    int code_int = 100*(packet[0] - '0') + 10*(packet[1] - '0') + packet[2] - '0';
     printf(YELLOW "\t\t\t\t\t\tResponse code: (%d) " NORMAL, code_int);
     switch(code_int){
         case 110:
@@ -281,18 +335,17 @@ void ftp_response(const unsigned char *packet){
             break;
     }
     int cnt=0;
-    int i=0;
     printf(YELLOW "\t\t\t\t\t\tResponse message: "NORMAL);
-    while(i<strlen(payload)-4 && cnt!=0){
-        if(packet[i+4] == '\r' && packet[i+5] == '\n'){ //+4 pour ne pas noter le code
+    for(int i = 4; i < size_payload-1; i++) {
+            if(packet[i] == '\r' && packet[i+1] == '\n'){
                 cnt=0;
                 i++;
-        }
-        else{
-            printf(YELLOW "%c" NORMAL, packet[i+4]);
-            cnt++;
-        }
-    }
+            }
+            else{
+                printf(YELLOW "%c" NORMAL, packet[i]);
+                cnt++;
+            }
+  		}
     printf(YELLOW "\n" NORMAL);
 
 }
@@ -302,31 +355,33 @@ void ftp(const unsigned char *packet, bool is_response){
         return;
     }
     printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
-    printf(YELLOW "\t\t\t\t\tPayload size : %d\n" NORMAL, size_payload);
-    if(size_payload==0){
-        printf(YELLOW "\t\t\t\t\tNo more data\n" NORMAL);
-    }
-    else{
-        int cnt=0;
-        for(int i = 0; i < size_payload; i++) {
-            if(cnt==0){
-                printf(YELLOW "\t\t\t\t\t" NORMAL);
-            }
-            if(packet[i] == '\r' && packet[i+1] == '\n'){
-                printf(YELLOW "\\r\\n\n" NORMAL);
-                cnt=0;
-                i++;
-            }
-            else{
-                printf(YELLOW "%c" NORMAL, packet[i]);
-                cnt++;
-            }
-  		}
-        if(is_response){
-            ftp_response(packet);
+    if(verbose == 3){
+        printf(YELLOW "\t\t\t\t\tPayload size : %d\n" NORMAL, size_payload);
+        if(size_payload==0){
+            printf(YELLOW "\t\t\t\t\tNo more data\n" NORMAL);
         }
         else{
-            ftp_request(packet);
+            int cnt=0;
+            for(int i = 0; i < size_payload-1; i++) {
+                if(cnt==0){
+                    printf(YELLOW "\t\t\t\t\t" NORMAL);
+                }
+                if(packet[i] == '\r' && packet[i+1] == '\n'){
+                    printf(YELLOW "\\r\\n\n" NORMAL);
+                    cnt=0;
+                    i++;
+                }
+                else{
+                    printf(YELLOW "%c" NORMAL, packet[i]);
+                    cnt++;
+                }
+  		    }
+            if(is_response && size_payload>=7){
+                ftp_response(packet);
+            }
+            else if(!is_response && size_payload>=8){
+                ftp_request(packet);
+            }
         }
     }
 }

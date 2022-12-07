@@ -1,6 +1,7 @@
 #include "bootp.h"
 
 extern int verbose;
+char ip_str[16];
 
 char *arp_hwtype(uint16_t hwtype){
     char *type;
@@ -105,7 +106,6 @@ char *arp_opcode(uint16_t opcode){
 }
 
 char *get_ip_addr_arp(uint8_t *ip){
-    char *ip_str = malloc(16);
     sprintf(ip_str, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
     return ip_str;
 }   

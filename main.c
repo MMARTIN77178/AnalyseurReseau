@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
 
     char * filter_exp = NULL;
     struct bpf_program filter;
-    char *device;
+    char *device=NULL;
     char* file = NULL;
 
     bpf_u_int32 mask;
