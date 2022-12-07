@@ -54,4 +54,10 @@ void ftp(const unsigned char *, bool);
 void ftp_request(const unsigned char *);
 
 void ftp_response(const unsigned char *);
+
+void smtp(const unsigned char *, bool);
+
+void smtp_request(const unsigned char *);
+
+void smtp_response(const unsigned char *);
 #endif
