@@ -44,7 +44,7 @@ void smtp_response(const unsigned char *packet){
             break;
         case 221:
             if(size_payload >= 9 && payload[4]=='2' && payload[6]=='0' && payload[8]=='0'){
-                printf("2.0.0 Goodbye");
+                printf("2.0.0 Goodbye\n");
                 response_code = true;
             }
             else{
@@ -94,7 +94,7 @@ void smtp_response(const unsigned char *packet){
             break;
         case 451:
             if(size_payload >=9 && payload[4]=='4' && payload[6]=='4' && payload[8]=='1'){
-                printf("4.4.1 IMAP Server unavailable");
+                printf("4.4.1 IMAP Server unavailable\n");
                 response_code = true;
             }
             else{
@@ -206,21 +206,25 @@ void smtp_response(const unsigned char *packet){
             printf("Unknown response code\n");
             break;
     }    
-    printf("\n");
-    if (size_payload-a-3>0){
-        printf(YELLOW "\t\t\t\t\t\tResponse parameter : " );
-        for(int i = a; i < size_payload-1; i++) {
-            if(packet[i] == '\r' && packet[i+1] == '\n'){
-                if(i+3 < size_payload && )
-                printf(YELLOW "\n\t\t\t\t\t\tResponse parameter : " );
-                i++;
-                break;
-            else{
-                printf(YELLOW "%c" NORMAL, packet[i]);
+    int j=0;
+    while(size_payload-a-j>4){
+        if ((100*(packet[a+j] - '0') + 10*(packet[a+j+1] - '0') + packet[a+j+2] - '0')==code_int){
+            printf(YELLOW "\t\t\t\t\t\tResponse parameter: " NORMAL);
+            int k=a+j+4;
+            while(k<size_payload-1){
+                if(packet[k]=='\r' && packet[k+1]=='\n'){
+                    printf("\n");
+                    k++;
+                    break;
+                }
+                else{
+                    printf(YELLOW "%c" NORMAL, packet[k]);
+                }
+                k++;
             }
+            j+=k;
         }
-        printf("\n");
-    }
+  	}
 }
 
 void smtp(const unsigned char *packet, bool is_response){

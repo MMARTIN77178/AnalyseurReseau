@@ -40,6 +40,7 @@ void tcp(const unsigned char *ippacket){
         printf(ROUGE "\t\tTCP || src port : %d || dst port : %d || seq : %.4x ||  ack : %d || len : %d\n" NORMAL,
          ntohs(tcpptr->th_sport), ntohs(tcpptr->th_dport), ntohl(tcpptr->th_seq), ntohl(tcpptr->th_ack), tcpptr->th_off*4);
     }
+    //rajouter options + checksum ok ?
     if(verbose==3){
         printf(ROUGE "\t\t\tSource port : %d\n" NORMAL, ntohs(tcpptr->th_sport));
         printf(ROUGE "\t\t\tDestination port : %d\n" NORMAL, ntohs(tcpptr->th_dport));
@@ -58,6 +59,7 @@ void tcp(const unsigned char *ippacket){
         printf(ROUGE "\t\t\tWindow : %d\n" NORMAL, ntohs(tcpptr->window));
         printf(ROUGE "\t\t\tChecksum : 0x%x\n" NORMAL, ntohs(tcpptr->check));
         printf(ROUGE "\t\t\tUrgent pointer : %d\n" NORMAL, ntohs(tcpptr->urg_ptr));
+
     }
     size_payload=size_payload-tcpptr->th_off*4;
     switch(ntohs(tcpptr->th_sport)){
