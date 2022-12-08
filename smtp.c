@@ -4,25 +4,47 @@ extern int size_payload;
 extern int verbose;
 
 void smtp_command(const unsigned char *packet){
-    return;
+    int j=0;
+    bool fin_ligne=false;
+    while(size_payload-j>1){  
+        int k=j;
+        printf(YELLOW "\t\t\t\t\tCommand Line: " NORMAL);
+        while(size_payload-1>k && fin_ligne==false){
+            if(packet[k]=='\r' && packet[k+1]=='\n'){
+                printf(YELLOW"\\r\\n\n" NORMAL);
+                fin_ligne=true;
+                k++;
+                int l=j;
+                printf(YELLOW "\t\t\t\t\t\tCommand: " NORMAL);
+                while(l<size_payload && packet[l]!=' '){
+                    printf(YELLOW "%c" NORMAL, packet[l]);
+                    l++;
+                }
+            }
+            else{
+                printf(YELLOW "%c" NORMAL, packet[k]);
+            }
+            k++; 
+        }
+        fin_ligne=false;
+        j=k;
+    }
 }
 
 void smtp_response(const unsigned char *packet){
     printf(YELLOW "\t\t\t\t\tResponse: " NORMAL);
     const char *payload = (const char *) packet;
-    int a=0;
+    int a=4;
     int i=0;
     int cnt=1;
     while(i < size_payload-1 && cnt != 0) {
             if(packet[i] == '\r' && packet[i+1] == '\n'){
                 printf(YELLOW "\\r\\n\n" NORMAL);
                 i++;
-                a+=2;
                 cnt=0;
             }
             else{
                 printf(YELLOW "%c" NORMAL, packet[i]);
-                a++;
             }
             i++;
   	}
@@ -31,199 +53,202 @@ void smtp_response(const unsigned char *packet){
     printf(YELLOW "\t\t\t\t\t\tResponse code: (%d) " NORMAL, code_int);
     switch(code_int){
         case 211:
-            printf("System status, or system help reply\n");
+            printf(YELLOW "System status, or system help reply\n"NORMAL);
             response_code = true;
             break;
         case 214:
-            printf("Help message\n");
+            printf(YELLOW "Help message\n"NORMAL);
             response_code = true;
             break;
         case 220:
-            printf("<domain> Service ready\n");
+            printf(YELLOW "<domain> Service ready\n"NORMAL);
             response_code = true;
             break;
         case 221:
             if(size_payload >= 9 && payload[4]=='2' && payload[6]=='0' && payload[8]=='0'){
-                printf("2.0.0 Goodbye\n");
+                printf(YELLOW "2.0.0 Goodbye\n"NORMAL);
                 response_code = true;
             }
             else{
-                printf("Service closing transmission channel\n");
+                printf(YELLOW "Service closing transmission channel\n"NORMAL);
                 response_code = true;
             }
             break;
         case 235:
-            printf("2.7.0 Authentication successful\n");
+            printf(YELLOW "2.7.0 Authentication successful\n"NORMAL);
             response_code = true;
             break;
         case 240:
-            printf("Requested mail action okay, completed\n");
+            printf(YELLOW "Requested mail action okay, completed\n"NORMAL);
             response_code = true;
             break;
         case 250:
-            printf("Requested mail action okay, completed\n");
+            printf(YELLOW "Requested mail action okay, completed\n"NORMAL);
             response_code = true;
             break;
         case 251:
-            printf("User not local; will forward to <forward-path>\n");
+            printf(YELLOW "User not local; will forward to <forward-path>\n"NORMAL);
             response_code = true;
             break;
         case 252:
-            printf("Cannot VRFY user, but will accept message and attempt delivery\n");
+            printf(YELLOW "Cannot VRFY user, but will accept message and attempt delivery\n"NORMAL);
             response_code = true;
             break;
         case 334:
-            printf("(Server challenge - the text part contains the Base64-encoded challenge)\n");
+            printf(YELLOW "(Server challenge - the text part contains the Base64-encoded challenge)\n"NORMAL);
             response_code = true;
             break;
         case 354:
-            printf("Start mail input; end with <CRLF>.<CRLF>\n");
+            printf(YELLOW "Start mail input; end with <CRLF>.<CRLF>\n"NORMAL);
             response_code = true;
             break;
         case 421:
-            printf("Service not available, closing transmission channel\n");
+            printf(YELLOW "Service not available, closing transmission channel\n"NORMAL);
             response_code = true;
             break;
         case 432:
-            printf("4.7.12 A password transition is needed\n");
+            printf(YELLOW "4.7.12 A password transition is needed\n"NORMAL);
             response_code = true;
             break;
         case 450:
-            printf("Requested mail action not taken: mailbox unavailable\n");
+            printf(YELLOW "Requested mail action not taken: mailbox unavailable\n"NORMAL);
             response_code = true;
             break;
         case 451:
             if(size_payload >=9 && payload[4]=='4' && payload[6]=='4' && payload[8]=='1'){
-                printf("4.4.1 IMAP Server unavailable\n");
+                printf(YELLOW "4.4.1 IMAP Server unavailable\n"NORMAL);
                 response_code = true;
             }
             else{
-                printf("Requested action aborted: local error in processing\n");
+                printf(YELLOW "Requested action aborted: local error in processing\n"NORMAL);
                 response_code = true;
             }
             break;
         case 452:
-            printf(" 4.7.0 Requested action not taken: insufficient system storage\n");
+            printf(YELLOW " 4.7.0 Requested action not taken: insufficient system storage\n"NORMAL);
             response_code = true;
             break;
         case 500:
             if(size_payload >= 9 && payload[4]=='5' && payload[6]=='5' && payload[8]=='6'){
-                printf("5.5.6 Authentication Exchange line is too long\n");
+                printf(YELLOW "5.5.6 Authentication Exchange line is too long\n"NORMAL);
                 response_code = true;
             }
             else{
-                printf("Syntax error, command unrecognized\n");
+                printf(YELLOW "Syntax error, command unrecognized\n"NORMAL);
                 response_code = true;
             }
             break;
         case 501:
             if(size_payload >= 9 && payload[4]=='5' && payload[6]=='5' && payload[8]=='2'){
-                printf("5.5.2 Cannot Base64-decode Client responses\n");
+                printf(YELLOW "5.5.2 Cannot Base64-decode Client responses\n"NORMAL);
                 response_code = true;
             }
             else if(size_payload >= 9 && payload[4]=='5' && payload[6]=='7' && payload[8]=='0'){
-                printf("5.7.0 Client initiated Authentication Exchange\n");
+                printf(YELLOW "5.7.0 Client initiated Authentication Exchange\n"NORMAL);
                 response_code = true;
             }
             else{
-                printf("Syntax error in parameters or arguments\n");
+                printf(YELLOW "Syntax error in parameters or arguments\n"NORMAL);
                 response_code = true;
             }
             break;
         case 502:
-            printf("Command not implemented\n");
+            printf(YELLOW "Command not implemented\n"NORMAL);
             response_code = true;
             break;
         case 503:
-            printf("Bad sequence of commands\n");
+            printf(YELLOW "Bad sequence of commands\n"NORMAL);
             response_code = true;
             break;
         case 504:
             if(size_payload >= 9 && payload[4]=='5' && payload[6]=='5' && payload[8]=='4'){
-                printf("5.5.4 Unrecognized authentication type\n");
+                printf(YELLOW "5.5.4 Unrecognized authentication type\n"NORMAL);
                 response_code = true;
             }
             else{
-                printf("Command parameter not implemented\n");
+                printf(YELLOW "Command parameter not implemented\n"NORMAL);
                 response_code = true;
             }
             break;
         case 521:
-            printf("Server does not accept mail (see RFC1846)\n");
+            printf(YELLOW "Server does not accept mail (see RFC1846)\n"NORMAL);
             response_code = true;
             break;
         case 523:
-            printf("Encryption needed\n");
+            printf(YELLOW "Encryption needed\n"NORMAL);
             response_code = true;
             break;
         case 530:
-            printf("5.7.0 Authentication required\n");
+            printf(YELLOW "5.7.0 Authentication required\n"NORMAL);
             response_code = true;
             break;
         case 534:
-            printf("5.7.9 Authentication mechanism is too weak\n");
+            printf(YELLOW "5.7.9 Authentication mechanism is too weak\n"NORMAL);
             response_code = true;
             break;
         case 535:
-            printf("5.7.8 Authentication credentials invalid\n");
+            printf(YELLOW "5.7.8 Authentication credentials invalid\n"NORMAL);
             response_code = true;
             break;
         case 538:
-            printf("5.7.11 Encryption required for requested authentication mechanism\n");
+            printf(YELLOW "5.7.11 Encryption required for requested authentication mechanism\n"NORMAL);
             response_code = true;
             break;
         case 550:
-            printf("Requested action not taken: mailbox unavailable\n");
+            printf(YELLOW "Requested action not taken: mailbox unavailable\n"NORMAL);
             response_code = true;
             break;
         case 551:
-            printf("User not local; please try <forward-path>\n");
+            printf(YELLOW "User not local; please try <forward-path>\n"NORMAL);
             response_code = true;
             break;
         case 552:
-            printf("Requested mail action aborted: exceeded storage allocation\n");
+            printf("Requested mail action aborted: exceeded storage allocation\n"NORMAL);
             response_code = true;
             break;
         case 553:
-            printf("Requested action not taken: mailbox name not allowed\n");
+            printf(YELLOW "Requested action not taken: mailbox name not allowed\n"NORMAL);
             response_code = true;
             break;
         case 554:
             if(size_payload >= 9 && payload[4]=='5' && payload[6]=='3' && payload[8]=='4'){
-                printf("5.3.4 Message too big for system\n");
+                printf(YELLOW "5.3.4 Message too big for system\n"NORMAL);
                 response_code = true;
             }
             else{
-                printf("Transaction failed\n");
+                printf(YELLOW "Transaction failed\n"NORMAL);
                 response_code = true;
             }
             break;
         case 556:
-            printf("Domain does not accept mail\n");
+            printf(YELLOW "Domain does not accept mail\n"NORMAL);
             response_code = true;
             break;
         default:
-            printf("Unknown response code\n");
+            printf(YELLOW "Unknown response code\n"NORMAL);
             break;
     }    
     int j=0;
-    while(size_payload-a-j>4){
-        if ((100*(packet[a+j] - '0') + 10*(packet[a+j+1] - '0') + packet[a+j+2] - '0')==code_int){
+    bool fin_ligne=false;
+    while(size_payload-j>4){  
+        int k=j;    
+        if ((100*(packet[k] - '0') + 10*(packet[k+1] - '0') + packet[k+2] - '0')==code_int){
+            k+=4;
             printf(YELLOW "\t\t\t\t\t\tResponse parameter: " NORMAL);
-            int k=a+j+4;
-            while(k<size_payload-1){
+            while(size_payload-1>k && fin_ligne==false){
                 if(packet[k]=='\r' && packet[k+1]=='\n'){
                     printf("\n");
+                    fin_ligne=true;
                     k++;
-                    break;
                 }
                 else{
                     printf(YELLOW "%c" NORMAL, packet[k]);
                 }
                 k++;
             }
-            j+=k;
+            fin_ligne=false;
         }
+        j=k;
   	}
 }
 
@@ -239,7 +264,7 @@ void smtp(const unsigned char *packet, bool is_response){
         if(is_response && size_payload>=7){
                 smtp_response(packet);
         }
-        else if(!is_response && size_payload>=8){
+        else if(!is_response){
                 smtp_command(packet);
         }
     }

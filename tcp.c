@@ -93,6 +93,9 @@ void tcp(const unsigned char *ippacket){
         case 20:
             ftp(ippacket+tcpptr->th_off*4, false);
             break;
+        case 25:
+            smtp(ippacket+tcpptr->th_off*4, false);
+            break;
         /*
         case 67:
             bootp(ippacket+tcpptr->th_off*4);
