@@ -18,13 +18,21 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
     char *ethdst=get_mac_addr(ethptr->ether_dhost);
     char *ethsrc=get_mac_addr(ethptr->ether_shost);
     //idée : implémenter fonction pour récupérer Organizationally Unique Identifier
-    if((strcmp(ethdst, "00:00:00:00:00") == 0) && strcmp(ethdst, "00:00:00:00:00") == 0){
-        printf("Ethernet || ");
+    printf("Ethernet || ");
+    switch(verbose){
+        case 1:
+            if(strlen(net_pckt)==0){
+                printf("Dst: %s, Src: %s \n\tType: ", ethdst, ethsrc);
+            }
+            break;
+        case 2:
+            printf("Dst: %s, Src: %s \n\tType:", ethdst, ethsrc);
+            break;
+        case 3:
+            printf("Destination: %s || Source: %s || Type: %s\n", ethdst, ethsrc, ethptr->ether_type);
+            printf("\tDestination: %s\n\tSource: %s\n\tType: %s\n", ethdst, ethsrc, ethptr->ether_type);
+            break;
     }
-    else{
-        printf("Ethernet || src : %s || dest : %s \n ", ethsrc, ethdst);
-    }
-
     switch(ntohs(ethptr->ether_type)){
         case ETHERTYPE_IP:
             ipv4(net_pckt);
@@ -58,23 +66,30 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
 
 void ipv4(const unsigned char* net_pckt){
     struct ip *ipptr=(struct ip*)net_pckt;
-    if(verbose>=2){
-        printf(BLEU "\tIPv4 || src: %s || dst: %s ||\n" NORMAL, inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
-    }
-    if(verbose==3){
-        printf(BLEU "\t\tHeader length : %d (%d bytes)\n" NORMAL, ipptr->ip_hl, ipptr->ip_hl*4);
-        printf(BLEU "\t\tVersion : %d\n" NORMAL, ipptr->ip_v);
-        printf(BLEU "\t\tType of service : %d\n" NORMAL, ipptr->ip_tos);
-        printf(BLEU "\t\tTotal length : %d\n" NORMAL, ntohs(ipptr->ip_len));
-        printf(BLEU "\t\tIdentification : 0x%x\n" NORMAL, ntohs(ipptr->ip_id));
-        printf(BLEU "\t\tFragment offset : 0x%x\n" NORMAL, ntohs(ipptr->ip_off));
-        printf(BLEU "\t\tTime to live : %d\n" NORMAL, ipptr->ip_ttl);
-        printf(BLEU "\t\tChecksum : 0x%x\n" NORMAL, ntohs(ipptr->ip_sum));
-        printf(BLEU "\t\tSource address : %s\n" NORMAL, inet_ntoa(ipptr->ip_src));
-        printf(BLEU "\t\tDestination address : %s\n" NORMAL, inet_ntoa(ipptr->ip_dst));
+    switch(verbose){
+        case 1:
+        if(strlen(net_pckt)!=0)
+            printf("src: %s || dst: %s || Protocole : ", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+            break;
+        case 2:
+            printf(BLEU "IPv4 || src: %s || dst: %s ||\n" NORMAL, inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+            break;
+        case 3:
+            printf("src: %s || dst: %s ||", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+            printf(BLEU "IPv4 || src: %s || dst: %s ||\n" NORMAL, inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+            printf(BLEU "\t\tHeader length : %d (%d bytes)\n" NORMAL, ipptr->ip_hl, ipptr->ip_hl*4);
+            printf(BLEU "\t\tVersion : %d\n" NORMAL, ipptr->ip_v);
+            printf(BLEU "\t\tType of service : %d\n" NORMAL, ipptr->ip_tos);
+            printf(BLEU "\t\tTotal length : %d\n" NORMAL, ntohs(ipptr->ip_len));
+            printf(BLEU "\t\tIdentification : 0x%x\n" NORMAL, ntohs(ipptr->ip_id));
+            printf(BLEU "\t\tFragment offset : 0x%x\n" NORMAL, ntohs(ipptr->ip_off));
+            printf(BLEU "\t\tTime to live : %d\n" NORMAL, ipptr->ip_ttl);
+            printf(BLEU "\t\tChecksum : 0x%x\n" NORMAL, ntohs(ipptr->ip_sum));
+            printf(BLEU "\t\tSource address : %s\n" NORMAL, inet_ntoa(ipptr->ip_src));
+            printf(BLEU "\t\tDestination address : %s\n" NORMAL, inet_ntoa(ipptr->ip_dst));
     }
     size_payload=ntohs(ipptr->ip_len)-ipptr->ip_hl*4;
-    if(verbose>=2){
+    if(size_payload>0){
         switch(ipptr->ip_p){
             case IPPROTO_TCP:
                 tcp(net_pckt+ipptr->ip_hl*4);
@@ -91,6 +106,9 @@ void ipv4(const unsigned char* net_pckt){
             default:
                 break;
         }
+    }
+    else{
+        printf( "IPv4\n");
     }
 }
 

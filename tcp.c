@@ -78,6 +78,9 @@ void tcp(const unsigned char *ippacket){
         case 25:
             smtp(ippacket+tcpptr->th_off*4, true);
             break;
+        case 110:
+            pop(ippacket+tcpptr->th_off*4, true);
+            break;
         /*
         case 67:
             bootp(ippacket+tcpptr->th_off*4);
@@ -101,6 +104,9 @@ void tcp(const unsigned char *ippacket){
             break;
         case 25:
             smtp(ippacket+tcpptr->th_off*4, false);
+            break;
+        case 110:
+            pop(ippacket+tcpptr->th_off*4, false);
             break;
         /*
         case 67:

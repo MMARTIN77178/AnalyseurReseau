@@ -211,7 +211,7 @@ void ftp_response(const unsigned char *packet){
     const char *payload = (const char *) packet;
     
     int code_int = 100*(packet[0] - '0') + 10*(packet[1] - '0') + packet[2] - '0';
-    printf(YELLOW "\tResponse code: (%d) " NORMAL, code_int);
+    printf(YELLOW "\t\t\t\t\t\tResponse code: (%d) " NORMAL, code_int);
     switch(code_int){
         case 110:
             printf(YELLOW "Restart marker reply.\n"NORMAL);
@@ -335,7 +335,7 @@ void ftp_response(const unsigned char *packet){
             break;
     }
     int cnt=0;
-    printf(YELLOW "\tResponse message: "NORMAL);
+    printf(YELLOW "\t\t\t\t\t\tResponse message: "NORMAL);
     for(int i = 4; i < size_payload-1; i++) {
             if(packet[i] == '\r' && packet[i+1] == '\n'){
                 cnt=0;
@@ -356,7 +356,7 @@ void ftp(const unsigned char *packet, bool is_response){
     }
     printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
     if(verbose == 3){
-        printf(YELLOW "Payload size : %d\n" NORMAL, size_payload);
+        printf(YELLOW "\t\t\t\t\tPayload size : %d\n" NORMAL, size_payload);
         if(size_payload==0){
             printf(YELLOW "No more data\n" NORMAL);
         }
@@ -364,7 +364,7 @@ void ftp(const unsigned char *packet, bool is_response){
             int cnt=0;
             for(int i = 0; i < size_payload-1; i++) {
                 if(cnt==0){
-                    printf(YELLOW "" NORMAL);
+                    printf(YELLOW "\t\t\t\t\t" NORMAL);
                 }
                 if(packet[i] == '\r' && packet[i+1] == '\n'){
                     printf(YELLOW "\\r\\n\n" NORMAL);

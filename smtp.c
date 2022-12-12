@@ -8,14 +8,14 @@ void smtp_command(const unsigned char *packet){
     bool fin_ligne=false;
     while(size_payload-j>1){  
         int k=j;
-        printf(YELLOW "Command Line: " NORMAL);
+        printf(YELLOW "\t\t\t\t\tCommand Line: " NORMAL);
         while(size_payload-1>k && fin_ligne==false){
             if(packet[k]=='\r' && packet[k+1]=='\n'){
                 printf(YELLOW"\\r\\n\n" NORMAL);
                 fin_ligne=true;
                 k++;
                 int l=j;
-                printf(YELLOW "\tCommand: " NORMAL);
+                printf(YELLOW "\t\t\t\t\t\tCommand: " NORMAL);
                 while(l<size_payload && packet[l]!=' '){
                     printf(YELLOW "%c" NORMAL, packet[l]);
                     l++;
@@ -32,7 +32,7 @@ void smtp_command(const unsigned char *packet){
 }
 
 void smtp_response(const unsigned char *packet){
-    printf(YELLOW "Response: " NORMAL);
+    printf(YELLOW "\t\t\t\t\tResponse: " NORMAL);
     const char *payload = (const char *) packet;
     int a=4;
     int i=0;
@@ -50,7 +50,7 @@ void smtp_response(const unsigned char *packet){
   	}
     bool response_code = false;
     int code_int = 100*(packet[0] - '0') + 10*(packet[1] - '0') + packet[2] - '0';
-    printf(YELLOW "\tResponse code: (%d) " NORMAL, code_int);
+    printf(YELLOW "\t\t\t\t\t\tResponse code: (%d) " NORMAL, code_int);
     switch(code_int){
         case 211:
             printf(YELLOW "System status, or system help reply\n"NORMAL);
@@ -234,7 +234,7 @@ void smtp_response(const unsigned char *packet){
         int k=j;    
         if ((100*(packet[k] - '0') + 10*(packet[k+1] - '0') + packet[k+2] - '0')==code_int){
             k+=4;
-            printf(YELLOW "\tResponse parameter: " NORMAL);
+            printf(YELLOW "\t\t\t\t\t\tResponse parameter: " NORMAL);
             while(size_payload-1>k && fin_ligne==false){
                 if(packet[k]=='\r' && packet[k+1]=='\n'){
                     printf("\n");
