@@ -72,6 +72,9 @@ void tcp(const unsigned char *ippacket){
         case 20:
             ftp(ippacket+tcpptr->th_off*4, true);
             break;
+        case 23:
+            telnet(ippacket+tcpptr->th_off*4);
+            break;
         case 25:
             smtp(ippacket+tcpptr->th_off*4, true);
             break;
@@ -92,6 +95,9 @@ void tcp(const unsigned char *ippacket){
             break;
         case 20:
             ftp(ippacket+tcpptr->th_off*4, false);
+            break;
+        case 23:
+            telnet(ippacket+tcpptr->th_off*4);
             break;
         case 25:
             smtp(ippacket+tcpptr->th_off*4, false);

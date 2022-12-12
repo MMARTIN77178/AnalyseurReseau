@@ -15,7 +15,7 @@
 #define FG_LTBLACK   "\033[1;30m"
 #define FG_LTRED     "\033[1;31m"
 #define FG_LTGREEN   "\033[1;32m"
-#define FG_LTYELLOW  "\033[1;33m"
+#define YELLOW   "\033[1;33m"
 #define FG_LTBLUE    "\033[1;34m"
 #define FG_LTMAGENTA "\033[1;35m"
 #define FG_LTCYAN    "\033[1;36m"

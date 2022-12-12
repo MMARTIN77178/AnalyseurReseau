@@ -1,5 +1,5 @@
-OBJS	= main.o ethernet.o tcp.o arp.o udp.o http.o dns.o ftp.o smtp.o
-SOURCE	= main.c ethernet.c tcp.c arp.c udp.c http.c dns.c ftp.c smtp.c	
+OBJS	= main.o ethernet.o tcp.o arp.o udp.o http.o dns.o ftp.o smtp.o telnet.o
+SOURCE	= main.c ethernet.c tcp.c arp.c udp.c http.c dns.c ftp.c smtp.c	telnet.c
 HEADER	= bootp.h arp.h dns.h
 OUT		= analyseur
 LFLAGS	= -lpcap

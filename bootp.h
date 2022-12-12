@@ -60,4 +60,6 @@ void smtp(const unsigned char *, bool);
 void smtp_request(const unsigned char *);
 
 void smtp_response(const unsigned char *);
+
+void telnet(const unsigned char *);
 #endif

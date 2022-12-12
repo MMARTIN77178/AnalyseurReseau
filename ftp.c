@@ -9,7 +9,7 @@ void ftp_request(const unsigned char* packet)
     const char *payload = (const char *) packet;
     char req[4];
     strncpy(req, payload, 4);
-    printf(YELLOW "\t\t\t\t\t\tRequest command:" NORMAL);
+    printf(YELLOW "\tRequest command:" NORMAL);
     if (strcmp(req, "ABOR")==0){
         printf(YELLOW "ABOR\n"NORMAL);
     }
@@ -189,7 +189,7 @@ void ftp_request(const unsigned char* packet)
     }
     int cnt=0;
     if(size_payload-4>0){
-        printf(YELLOW "\t\t\t\t\t\tRequest arg:"NORMAL);
+        printf(YELLOW "\tRequest arg:"NORMAL);
         for(int i = 4; i < size_payload-1; i++) {
             if(packet[i] == '\r' && packet[i+1] == '\n'){
                 cnt=0;
@@ -211,7 +211,7 @@ void ftp_response(const unsigned char *packet){
     const char *payload = (const char *) packet;
     
     int code_int = 100*(packet[0] - '0') + 10*(packet[1] - '0') + packet[2] - '0';
-    printf(YELLOW "\t\t\t\t\t\tResponse code: (%d) " NORMAL, code_int);
+    printf(YELLOW "\tResponse code: (%d) " NORMAL, code_int);
     switch(code_int){
         case 110:
             printf(YELLOW "Restart marker reply.\n"NORMAL);
@@ -335,7 +335,7 @@ void ftp_response(const unsigned char *packet){
             break;
     }
     int cnt=0;
-    printf(YELLOW "\t\t\t\t\t\tResponse message: "NORMAL);
+    printf(YELLOW "\tResponse message: "NORMAL);
     for(int i = 4; i < size_payload-1; i++) {
             if(packet[i] == '\r' && packet[i+1] == '\n'){
                 cnt=0;
@@ -356,15 +356,15 @@ void ftp(const unsigned char *packet, bool is_response){
     }
     printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
     if(verbose == 3){
-        printf(YELLOW "\t\t\t\t\tPayload size : %d\n" NORMAL, size_payload);
+        printf(YELLOW "Payload size : %d\n" NORMAL, size_payload);
         if(size_payload==0){
-            printf(YELLOW "\t\t\t\t\tNo more data\n" NORMAL);
+            printf(YELLOW "No more data\n" NORMAL);
         }
         else{
             int cnt=0;
             for(int i = 0; i < size_payload-1; i++) {
                 if(cnt==0){
-                    printf(YELLOW "\t\t\t\t\t" NORMAL);
+                    printf(YELLOW "" NORMAL);
                 }
                 if(packet[i] == '\r' && packet[i+1] == '\n'){
                     printf(YELLOW "\\r\\n\n" NORMAL);
