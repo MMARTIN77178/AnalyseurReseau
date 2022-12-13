@@ -94,6 +94,9 @@ void tcp(const unsigned char *ippacket){
         case 110:
             pop(ippacket+tcpptr->th_off*4, true);
             break;
+        case 143:
+            imap(ippacket+tcpptr->th_off*4, true);
+            break;
         default :
             prot_trouve--;
             break;     
@@ -123,6 +126,9 @@ void tcp(const unsigned char *ippacket){
             break;
         case 110:
             pop(ippacket+tcpptr->th_off*4, false);
+            break;
+        case 143:
+            imap(ippacket+tcpptr->th_off*4, false);
             break;
         default :
             prot_trouve--;

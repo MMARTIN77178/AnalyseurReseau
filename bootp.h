@@ -70,4 +70,6 @@ void pop(const unsigned char *, bool);
 void pop_request(const unsigned char *);
 
 void pop_response(const unsigned char *);
+
+void imap(const unsigned char *, bool);
 #endif
