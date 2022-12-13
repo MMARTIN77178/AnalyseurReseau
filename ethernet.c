@@ -22,7 +22,6 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
     char *ethdst=get_mac_addr(ethptr->ether_dhost);
     char *ethsrc=get_mac_addr(ethptr->ether_shost);
     //idée : implémenter fonction pour récupérer Organizationally Unique Identifier
-<<<<<<< HEAD
     switch(verbose){
         case 1:
             break;
@@ -34,21 +33,6 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
             printf("\tSource : %s\n", ethsrc);
             printf("\tDestination : %s\n", ethdst);
             printf("\tType : 0x0%x\n", ntohs(ethptr->ether_type));
-=======
-    printf("Ethernet || ");
-    switch(verbose){
-        case 1:
-            if(strlen(net_pckt)==0){
-                printf("Dst: %s, Src: %s \n\tType: ", ethdst, ethsrc);
-            }
-            break;
-        case 2:
-            printf("Dst: %s, Src: %s \n\tType:", ethdst, ethsrc);
-            break;
-        case 3:
-            printf("Destination: %s || Source: %s || Type: %s\n", ethdst, ethsrc, ethptr->ether_type);
-            printf("\tDestination: %s\n\tSource: %s\n\tType: %s\n", ethdst, ethsrc, ethptr->ether_type);
->>>>>>> 6f1668042c28dd366a46c38079b1c356967284dd
             break;
     }
     switch(ntohs(ethptr->ether_type)){
@@ -84,7 +68,6 @@ void ethernet(u_char *user_args, const struct pcap_pkthdr* packet_header, const 
 
 void ipv4(const unsigned char* net_pckt){
     struct ip *ipptr=(struct ip*)net_pckt;
-<<<<<<< HEAD
     size_payload=ntohs(ipptr->ip_len)-ipptr->ip_hl*4;
     size_packet=ntohs(ipptr->ip_len)+14;
     switch(verbose){
@@ -125,50 +108,10 @@ void ipv4(const unsigned char* net_pckt){
             break;
         */
         default:
-=======
-    switch(verbose){
-        case 1:
-        if(strlen(net_pckt)!=0)
-            printf("src: %s || dst: %s || Protocole : ", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
+            if(verbose==1){
+                printf("Protocol : IPv4 || Total Length : %d\n", size_packet);
+            }
             break;
-        case 2:
-            printf(BLEU "IPv4 || src: %s || dst: %s ||\n" NORMAL, inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
-            break;
-        case 3:
-            printf("src: %s || dst: %s ||", inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
-            printf(BLEU "IPv4 || src: %s || dst: %s ||\n" NORMAL, inet_ntoa(ipptr->ip_src), inet_ntoa(ipptr->ip_dst));
-            printf(BLEU "\t\tHeader length : %d (%d bytes)\n" NORMAL, ipptr->ip_hl, ipptr->ip_hl*4);
-            printf(BLEU "\t\tVersion : %d\n" NORMAL, ipptr->ip_v);
-            printf(BLEU "\t\tType of service : %d\n" NORMAL, ipptr->ip_tos);
-            printf(BLEU "\t\tTotal length : %d\n" NORMAL, ntohs(ipptr->ip_len));
-            printf(BLEU "\t\tIdentification : 0x%x\n" NORMAL, ntohs(ipptr->ip_id));
-            printf(BLEU "\t\tFragment offset : 0x%x\n" NORMAL, ntohs(ipptr->ip_off));
-            printf(BLEU "\t\tTime to live : %d\n" NORMAL, ipptr->ip_ttl);
-            printf(BLEU "\t\tChecksum : 0x%x\n" NORMAL, ntohs(ipptr->ip_sum));
-            printf(BLEU "\t\tSource address : %s\n" NORMAL, inet_ntoa(ipptr->ip_src));
-            printf(BLEU "\t\tDestination address : %s\n" NORMAL, inet_ntoa(ipptr->ip_dst));
-    }
-    size_payload=ntohs(ipptr->ip_len)-ipptr->ip_hl*4;
-    if(size_payload>0){
-        switch(ipptr->ip_p){
-            case IPPROTO_TCP:
-                tcp(net_pckt+ipptr->ip_hl*4);
-                break;        
-            case IPPROTO_UDP:
-                udp(net_pckt+ipptr->ip_hl*4);
-                break;
-            /*
-            case IPPROTO_ICMP:
-                printf(BLEUCLAIR "\t\tICMP\n" NORMAL);
-                icmp(net_pckt+iptr->ip_hl*4);
-                break;
-            */
-            default:
->>>>>>> 6f1668042c28dd366a46c38079b1c356967284dd
-                break;
-    }
-    else{
-        printf( "IPv4\n");
     }
 }
 

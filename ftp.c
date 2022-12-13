@@ -355,7 +355,6 @@ void ftp(const unsigned char *packet, bool is_response){
     if(size_payload==0){
         return;
     }
-<<<<<<< HEAD
     switch(verbose){
         case 1:
             printf("FTP || Total Length : %d || ", size_packet);
@@ -389,15 +388,6 @@ void ftp(const unsigned char *packet, bool is_response){
         case 3:
             printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
             printf("\t\t\t\t\t");
-=======
-    printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
-    if(verbose == 3){
-        printf(YELLOW "\t\t\t\t\tPayload size : %d\n" NORMAL, size_payload);
-        if(size_payload==0){
-            printf(YELLOW "No more data\n" NORMAL);
-        }
-        else{
->>>>>>> 6f1668042c28dd366a46c38079b1c356967284dd
             int cnt=0;
             for(int i = 0; i < size_payload-1; i++) {
                 if(cnt==0){

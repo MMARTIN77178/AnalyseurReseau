@@ -91,15 +91,12 @@ void tcp(const unsigned char *ippacket){
         case 25:
             smtp(ippacket+tcpptr->th_off*4, true);
             break;
-<<<<<<< HEAD
-        default :
-            prot_trouve--;
-            break;    
-=======
         case 110:
             pop(ippacket+tcpptr->th_off*4, true);
             break;
->>>>>>> 6f1668042c28dd366a46c38079b1c356967284dd
+        default :
+            prot_trouve--;
+            break;     
         /*
         case 67:
             bootp(ippacket+tcpptr->th_off*4);
@@ -124,14 +121,12 @@ void tcp(const unsigned char *ippacket){
         case 25:
             smtp(ippacket+tcpptr->th_off*4, false);
             break;
-<<<<<<< HEAD
-        default :
-            prot_trouve--;
-=======
         case 110:
             pop(ippacket+tcpptr->th_off*4, false);
->>>>>>> 6f1668042c28dd366a46c38079b1c356967284dd
             break;
+        default :
+            prot_trouve--;
+        
         /*
         case 67:
             bootp(ippacket+tcpptr->th_off*4);
