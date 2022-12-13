@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <sys/time.h>
+#include <time.h>
 
 #define BLEUCLAIR "\033[01;34m"
 #define ROUGE "\033[00;31m"

@@ -114,18 +114,38 @@ char *get_ip_addr_arp(uint8_t *ip){
 
 void arp(const unsigned char* net_pckt){
     struct ether_arp *arpptr=(struct ether_arp*)net_pckt;
-    if(verbose>=2){
-        printf("\tARP || src: %s || dst: %s \n", get_mac_addr(arpptr->arp_sha), get_mac_addr(arpptr->arp_tha));
-    }
-    if(verbose==3){
-        printf(BLEU "\t\tHardware type : %s\n" NORMAL, arp_hwtype(ntohs(arpptr->ea_hdr.ar_hrd)));
-        printf(BLEU "\t\tProtocol type : %s\n" NORMAL, arp_prot(ntohs(arpptr->ea_hdr.ar_pro)));
-        printf(BLEU "\t\tHardware address length : %d\n" NORMAL, arpptr->ea_hdr.ar_hln);
-        printf(BLEU "\t\tProtocol address length : %d\n" NORMAL, arpptr->ea_hdr.ar_pln);
-        printf(BLEU "\t\tOperation : %s, (%d)\n" NORMAL, arp_opcode(ntohs(arpptr->ea_hdr.ar_op)), ntohs(arpptr->ea_hdr.ar_op));
-        printf(BLEU "\t\tSender hardware address : %s\n" NORMAL, get_mac_addr(arpptr->arp_sha));
-        printf(BLEU "\t\tSender protocol address : %s\n" NORMAL, get_ip_addr_arp(arpptr->arp_spa));
-        printf(BLEU "\t\tTarget hardware address : %s\n" NORMAL, get_mac_addr(arpptr->arp_tha));
-        printf(BLEU "\t\tTarget protocol address : %s\n" NORMAL, get_ip_addr_arp(arpptr->arp_tpa));
+    switch(verbose){
+        case 1:
+            printf("Source : %s || Destination : Broadcast || Protocol : ARP || Length : 60 || ", get_mac_addr(arpptr->arp_sha));
+            switch(ntohs(arpptr->ea_hdr.ar_op)){
+                case ARPOP_REQUEST:
+                    printf("Who has %s ? Tell %s\n", get_ip_addr_arp(arpptr->arp_tpa), get_ip_addr_arp(arpptr->arp_spa));
+                    break;
+                case ARPOP_REPLY:
+                    printf("%s is at %s\n", get_ip_addr_arp(arpptr->arp_spa), get_mac_addr(arpptr->arp_sha));
+                    break;
+                case ARPOP_RREQUEST:
+                    printf("Who is %s ? Tell %s\n", get_mac_addr(arpptr->arp_tha), get_mac_addr(arpptr->arp_sha));
+                    break;
+                case ARPOP_RREPLY:
+                    printf("%s is at %s\n", get_mac_addr(arpptr->arp_tha), get_mac_addr(arpptr->arp_sha));
+                    break;
+            }
+            break;
+        case 2:
+            printf(BLEU "\tARP || src: %s || (%s)\n" NORMAL, get_mac_addr(arpptr->arp_sha), arp_opcode(ntohs(arpptr->ea_hdr.ar_op)));
+            break;
+        case 3:
+            printf(BLEU "\tARP || src: %s || (%s)\n" NORMAL, get_mac_addr(arpptr->arp_sha), arp_opcode(ntohs(arpptr->ea_hdr.ar_op)));
+            printf(BLEU "\t\tHardware type : %s\n" NORMAL, arp_hwtype(ntohs(arpptr->ea_hdr.ar_hrd)));
+            printf(BLEU "\t\tProtocol type : %s\n" NORMAL, arp_prot(ntohs(arpptr->ea_hdr.ar_pro)));
+            printf(BLEU "\t\tHardware address length : %d\n" NORMAL, arpptr->ea_hdr.ar_hln);
+            printf(BLEU "\t\tProtocol address length : %d\n" NORMAL, arpptr->ea_hdr.ar_pln);
+            printf(BLEU "\t\tOperation : %s, (%d)\n" NORMAL, arp_opcode(ntohs(arpptr->ea_hdr.ar_op)), ntohs(arpptr->ea_hdr.ar_op));
+            printf(BLEU "\t\tSender hardware address : %s\n" NORMAL, get_mac_addr(arpptr->arp_sha));
+            printf(BLEU "\t\tSender protocol address : %s\n" NORMAL, get_ip_addr_arp(arpptr->arp_spa));
+            printf(BLEU "\t\tTarget hardware address : %s\n" NORMAL, get_mac_addr(arpptr->arp_tha));
+            printf(BLEU "\t\tTarget protocol address : %s\n" NORMAL, get_ip_addr_arp(arpptr->arp_tpa));
+            break;
     }
 }
