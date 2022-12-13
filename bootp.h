@@ -66,4 +66,8 @@ void smtp_response(const unsigned char *);
 void telnet(const unsigned char *);
 
 void pop(const unsigned char *, bool);
+
+void pop_request(const unsigned char *);
+
+void pop_response(const unsigned char *);
 #endif
