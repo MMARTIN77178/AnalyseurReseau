@@ -2,6 +2,7 @@
 
 extern int size_payload;
 extern int verbose;
+extern int size_packet;
 
 void smtp_command(const unsigned char *packet){
     int j=0;
@@ -253,19 +254,47 @@ void smtp_response(const unsigned char *packet){
 }
 
 void smtp(const unsigned char *packet, bool is_response){
-    if(size_payload==0){
-        return;
-    }
-    printf(YELLOW "\t\t\t\tSimple Mail Transfer Protocol\n" NORMAL);
-    if(verbose == 3){
-        if(size_payload==0){
-            printf(YELLOW "No more data\n" NORMAL);
-        }
-        if(is_response && size_payload>=7){
-                smtp_response(packet);
-        }
-        else if(!is_response){
-                smtp_command(packet);
-        }
+    switch(verbose){
+        case 1:
+            if(size_payload>0){
+                printf(YELLOW "Protocol : SMTP || Total Length : %d || \n" NORMAL, size_packet);
+            }
+            if(is_response){
+                printf("S:");
+            }
+            else{
+                printf("C:");
+            }
+            int i=0;
+            while (i<size_payload-1 && packet[i]!='\r' && packet[i+1]!='\n'){
+                printf("%c", packet[i]);
+                i++;
+            }
+            printf("\n");
+            break;
+        case 2:
+            if(is_response){
+                printf(YELLOW "\t\t\t\tSimple Mail Transfer Protocol, Response\n" NORMAL);
+            }
+            else{
+                printf(YELLOW "\t\t\t\tSimple Mail Transfer Protocol, Command\n" NORMAL);
+            }
+            break;
+        case 3:
+            printf(YELLOW "\t\t\t\tSimple Mail Transfer Protocol\n" NORMAL);
+            if(verbose == 3){
+                if(size_payload==0){
+                    printf(YELLOW "No more data\n" NORMAL);
+                }
+                if(is_response && size_payload>=7){
+                    smtp_response(packet);
+                }
+                else if(!is_response){
+                    smtp_command(packet);
+                }
+            }
+            break;
+        default:
+            break;
     }
 }

@@ -7,7 +7,7 @@ pcap_t *handle;
 int n=0;
 int verbose=1;
 
-int size_payload;
+int size_payload=0;
 
 void sigint_handler(){
     pcap_breakloop(handle);
@@ -16,7 +16,10 @@ void sigint_handler(){
 
 void print_packet(u_char *user_args, const struct pcap_pkthdr *packet_header, const u_char *packet){
     n++;
+    //struct tm *ltime;
+    //char timebuf[80]={0};
     printf(" %d || ", n);
+    //strftime( timebuf, sizeof(timebuf), "%a %Y-%m-%d %H:%M:%S %Z", ltime);
     ethernet(user_args, packet_header, packet);
 }
 

@@ -3,13 +3,14 @@
 
 extern int verbose;
 extern int size_payload;
+extern int size_packet;
 
 void ftp_request(const unsigned char* packet)
 {
     const char *payload = (const char *) packet;
     char req[4];
     strncpy(req, payload, 4);
-    printf(YELLOW "\tRequest command:" NORMAL);
+    printf(YELLOW "\t\t\t\t\t\tRequest command:" NORMAL);
     if (strcmp(req, "ABOR")==0){
         printf(YELLOW "ABOR\n"NORMAL);
     }
@@ -189,7 +190,7 @@ void ftp_request(const unsigned char* packet)
     }
     int cnt=0;
     if(size_payload-4>0){
-        printf(YELLOW "\tRequest arg:"NORMAL);
+        printf(YELLOW "\t\t\t\t\t\tRequest arg:"NORMAL);
         for(int i = 4; i < size_payload-1; i++) {
             if(packet[i] == '\r' && packet[i+1] == '\n'){
                 cnt=0;
@@ -354,6 +355,41 @@ void ftp(const unsigned char *packet, bool is_response){
     if(size_payload==0){
         return;
     }
+<<<<<<< HEAD
+    switch(verbose){
+        case 1:
+            printf("FTP || Total Length : %d || ", size_packet);
+            if(is_response){
+                printf("Response : ");
+                int i=0;
+                while(i<size_payload-1 && packet[i] != '\r' && packet[i+1] != '\n'){
+                    printf("%c", packet[i]);
+                    i++;
+                }
+            }
+            else{
+                printf("Request : ");
+                int i=0;
+                while(i<size_payload-1 && packet[i] != '\r' && packet[i+1] != '\n'){
+                    printf("%c", packet[i]);
+                    i++;
+                }
+            }
+            printf("\n");
+            break;
+        case 2:
+            printf(YELLOW "\t\t\t\tFile Transfer Protocol, " NORMAL);
+            if(is_response){
+                printf(YELLOW "(Response)\n"NORMAL);
+            }
+            else{
+                printf(YELLOW "(Request)\n"NORMAL);
+            }
+            break;
+        case 3:
+            printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
+            printf("\t\t\t\t\t");
+=======
     printf(YELLOW "\t\t\t\tFile Transfer Protocol\n" NORMAL);
     if(verbose == 3){
         printf(YELLOW "\t\t\t\t\tPayload size : %d\n" NORMAL, size_payload);
@@ -361,6 +397,7 @@ void ftp(const unsigned char *packet, bool is_response){
             printf(YELLOW "No more data\n" NORMAL);
         }
         else{
+>>>>>>> 6f1668042c28dd366a46c38079b1c356967284dd
             int cnt=0;
             for(int i = 0; i < size_payload-1; i++) {
                 if(cnt==0){
@@ -382,6 +419,6 @@ void ftp(const unsigned char *packet, bool is_response){
             else if(!is_response && size_payload>=8){
                 ftp_request(packet);
             }
-        }
+            break;
     }
 }

@@ -1,6 +1,7 @@
 #include "bootp.h"
 
 extern int size_payload;
+extern int size_packet;
 extern int verbose;
 
 void telnet(const unsigned char *packet) {
@@ -183,8 +184,10 @@ void telnet(const unsigned char *packet) {
 		    			i++;
 		    			if(packet[i] == 255 || i >= size_payload) {
 		    				j = 0;
+
 		    			}
 		    		}
+                    printf("\n");
 		    	}
 		    	else {
 		    		if(packet[i-1] == '\n' || packet[i-1] == '\r' || i == 0) {
@@ -198,8 +201,8 @@ void telnet(const unsigned char *packet) {
         }
 	}
     else{
-        if(verbose==1){
-            printf("Telnet data ...\n");
+        if(verbose==1 && size_payload > 0){
+            printf("Protocole : TELNET || Total length : %d || Telnet data ...\n", size_packet);
         }
     }
 }
