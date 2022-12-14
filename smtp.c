@@ -53,6 +53,14 @@ void smtp_response(const unsigned char *packet){
     int code_int = 100*(packet[0] - '0') + 10*(packet[1] - '0') + packet[2] - '0';
     printf(YELLOW "\t\t\t\t\t\tResponse code: (%d) " NORMAL, code_int);
     switch(code_int){
+        case 101:
+            printf(YELLOW "cannot open SMTP stream\n"NORMAL);
+            response_code = true;
+            break;
+        case 111:
+            printf(YELLOW "Refused connection or unable to open SMTP stream\n"NORMAL);
+            response_code = true;
+            break;
         case 211:
             printf(YELLOW "System status, or system help reply\n"NORMAL);
             response_code = true;
@@ -231,26 +239,28 @@ void smtp_response(const unsigned char *packet){
     }    
     int j=0;
     bool fin_ligne=false;
-    while(size_payload-j>4){  
-        int k=j;    
-        if ((100*(packet[k] - '0') + 10*(packet[k+1] - '0') + packet[k+2] - '0')==code_int){
-            k+=4;
-            printf(YELLOW "\t\t\t\t\t\tResponse parameter: " NORMAL);
-            while(size_payload-1>k && fin_ligne==false){
-                if(packet[k]=='\r' && packet[k+1]=='\n'){
-                    printf("\n");
-                    fin_ligne=true;
+    if(response_code==true){
+        while(size_payload-j>4){  
+            int k=j;    
+            if ((100*(packet[k] - '0') + 10*(packet[k+1] - '0') + packet[k+2] - '0')==code_int){
+                k+=4;
+                printf(YELLOW "\t\t\t\t\t\tResponse parameter: " NORMAL);
+                while(size_payload-1>k && fin_ligne==false){
+                    if(packet[k]=='\r' && packet[k+1]=='\n'){
+                        printf("\n");
+                        fin_ligne=true;
+                        k++;
+                    }
+                    else{
+                        printf(YELLOW "%c" NORMAL, packet[k]);
+                    }
                     k++;
                 }
-                else{
-                    printf(YELLOW "%c" NORMAL, packet[k]);
-                }
-                k++;
+                fin_ligne=false;
             }
-            fin_ligne=false;
-        }
-        j=k;
-  	}
+            j=k;
+  	    }
+    }
 }
 
 void smtp(const unsigned char *packet, bool is_response){

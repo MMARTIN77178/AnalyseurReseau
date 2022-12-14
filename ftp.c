@@ -5,8 +5,7 @@ extern int verbose;
 extern int size_payload;
 extern int size_packet;
 
-void ftp_request(const unsigned char* packet)
-{
+void ftp_request(const unsigned char* packet){
     const char *payload = (const char *) packet;
     char req[4];
     strncpy(req, payload, 4);

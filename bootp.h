@@ -25,7 +25,27 @@
 
 #define SET(x) (x==1?"set":"not set")
 
+#define BOOTP_REQUEST 1
+#define BOOTP_REPLY 2
+#define BOOTP_
 
+struct bootphdr {
+	u_int8_t bootp_op;			/* Opcode du packet */
+	u_int8_t bootp_htype;		/*  Hardware type*/
+	u_int8_t bootp_hlen;		/* Longueur de l'adresse pour l'hardware */
+	u_int8_t bootp_hops;		/* gateway hops */
+	u_int32_t bootp_id;			/* transaction ID */
+	u_int16_t bootp_secs;		/* temps depuis le debut du bootstrap (en seconde)*/
+	u_int16_t bootp_flags;		/* flags */
+	struct in_addr ciaddr;		/* client IP address */
+	struct in_addr yiaddr;		/* 'your' IP address */
+	struct in_addr siaddr;		/* server IP address */
+	struct in_addr giaddr;		/* gateway IP address */
+	u_char bootp_chaddr[16];	/* adresse hardware du client (optionnel)*/
+	u_char bootp_sname[64];		/* server host name (optionnel)*/
+	u_char bootp_file[128];		/* boot file name (optionnel)*/
+	u_char bootp_vend[64]; 		/* vendor*/
+};
 
 char * get_mac_addr(u_char *mac_addr);
 
