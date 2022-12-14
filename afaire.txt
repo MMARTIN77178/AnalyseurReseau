@@ -1,3 +1,2 @@
-ajouter option de verbosité dans les appels de fonctions
-
 tcp : rajouter options
+ameliorer imap (request, request tag, ...)

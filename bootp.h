@@ -49,27 +49,39 @@ void tcp(const unsigned char*);
 /** Protocole UDP **/
 void udp(const unsigned char *);
 
+/** Protocole HTTP **/
 void http(const unsigned char *);
 
+/** Protocole FTP**/
 void ftp(const unsigned char *, bool);
 
+/** Fonction qui affiche le contenu ftp lors d'une requête **/
 void ftp_request(const unsigned char *);
 
+/** Fonction qui affiche le contenu ftp lors d'une réponse **/
 void ftp_response(const unsigned char *);
 
+/** Protocole SMTP **/
 void smtp(const unsigned char *, bool);
 
-void smtp_request(const unsigned char *);
+/** Fonction qui affiche le contenu d'une commande SMTP**/
+void smtp_command(const unsigned char *);
 
+/** Fonction qui affiche le contenu d'une réponse SMTP**/
 void smtp_response(const unsigned char *);
 
+/** Protocole TELNET **/
 void telnet(const unsigned char *);
 
+/** Protocole POP **/
 void pop(const unsigned char *, bool);
 
+/** Fonction qui affiche le contenu d'une commande POP **/
 void pop_request(const unsigned char *);
 
+/** Fonction qui affiche le contenu d'une réponse POP **/
 void pop_response(const unsigned char *);
 
+/** Protocole IMAP **/
 void imap(const unsigned char *, bool);
 #endif

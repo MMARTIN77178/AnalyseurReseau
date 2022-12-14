@@ -78,19 +78,21 @@ void imap(const unsigned char *packet, bool is_response){
             break;
         case 3:
             printf(YELLOW "\t\t\t\tInternet Message Access Protocol\n" NORMAL);
-            printf(YELLOW "\t\t\t\tPost Office Protocol\n" NORMAL);
             if(size_payload==0){
                 printf(YELLOW "No more data\n" NORMAL);
             }
             else{
                 int i=0;
                 while(i<size_payload-1){
-                    printf("\t\t\t\t\t");
+                    printf(YELLOW "\t\t\t\t\t Line : " NORMAL);
                     while(i<size_payload-1 && packet[i]!='\r' && packet[i+1]!='\n'){
                         printf(YELLOW"%c" NORMAL, packet[i]);
                         i++;
                     }
-                    printf("\n");
+                    if(packet[i]=='\r' && packet[i+1]=='\n'){
+                        printf("\n");
+                    }
+                    i++;
                 }
             }
             break;
