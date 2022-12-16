@@ -44,8 +44,10 @@ struct bootphdr {
 	u_char bootp_chaddr[16];	/* adresse hardware du client (optionnel)*/
 	u_char bootp_sname[64];		/* server host name (optionnel)*/
 	u_char bootp_file[128];		/* boot file name (optionnel)*/
-	u_char bootp_vend[64]; 		/* vendor*/
+	u_int32_t bootp_magic; 		/* vendor*/
 };
+
+
 
 char * get_mac_addr(u_char *mac_addr);
 
@@ -104,4 +106,12 @@ void pop_response(const unsigned char *);
 
 /** Protocole IMAP **/
 void imap(const unsigned char *, bool);
+
+void bootp(const unsigned char *);
+
+void bootp_message_type(int);
+
+char* bootp_hwtype(uint8_t);
+
+void dhcp_option(const unsigned char *);
 #endif

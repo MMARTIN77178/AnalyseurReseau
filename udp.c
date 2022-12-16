@@ -26,24 +26,48 @@ void udp(const unsigned char *ippacket){
             printf(ROUGE "\t\t\tUDP Payload : %d\n" NORMAL, size_payload);
             break;
     }
-    int prot_trouve=2;
+    bool prot_trouve=false;
     switch(ntohs(udpptr->source)){
+        case 67:
+            bootp(ippacket+8);
+            prot_trouve=true;
+            break;
+        case 68:
+            if(prot_trouve==false){
+                bootp(ippacket+8);
+                prot_trouve=true;
+            }
+            break;
         case 80:
             http(ippacket+8);
+            prot_trouve=true;
             break;
         default:
-            prot_trouve--;
+            prot_trouve=false;
             break;
     }
     switch(ntohs(udpptr->dest)){
+        case 67:
+            if(prot_trouve==false){
+                bootp(ippacket+8);
+                prot_trouve=true;
+            }
+            break;
+        case 68:
+            if(prot_trouve==false){
+                bootp(ippacket+8);
+                prot_trouve=true;
+            }
+            break;
         case 80:
             http(ippacket+8);
+            prot_trouve=true;
             break;
         default:
-            prot_trouve--;
+            prot_trouve=false;
             break;
     }
-    if(prot_trouve==0 && verbose ==1){
+    if(prot_trouve==false && verbose ==1){
         printf("Protocol : UDP || Total Length : %d || Info : Unknown protocol\n", size_packet);
     }
     return;
